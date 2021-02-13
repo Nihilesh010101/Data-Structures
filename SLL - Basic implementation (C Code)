@@ -1,169 +1,91 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-struct node
-{
-int data;
-struct node *next;
-}*Head=NULL;
+struct node{
+    int data;
+    struct node *next;
+}*head=NULL;
 
-void insert_beginning(){
-    struct node *new_node,*current;
-    new_node=(struct node *)malloc(sizeof(struct node));
-    printf("\nEnter the data : ");
-    scanf("%d",&new_node->data);
-    new_node->next=Head;
-    Head=new_node;
-}
-void insert_middle(){
-    int exist=0;
-    struct node *new_node,*current;
-    new_node=(struct node *)malloc(sizeof(struct node));
-    printf("\nEnter the data : ");
-    scanf("%d",&new_node->data);
-    printf("\nEnter the value of data after which node is to be inserted:");
-    scanf("%d",&exist);
-    if(Head==NULL)
-    {
-    Head=new_node;
+
+void insert(){
+    int data_new,position,k=1;
+    struct node *p, *q,  *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    if(!new_node) printf("Memory error");
+    printf("\nEnter the data of the new node to be inserted: ");
+    scanf("%d",&data_new);
+    printf("\nEnter the position of the new node to be inserted: ");
+    scanf("%d",&position);
+    new_node->data=data_new;
+    p=head;
+    if(position==1){
+        new_node->next=head;
+        head=new_node;
     }
-    else
-    {
-    current=Head;
-    while(current->next!=exist)
-    {
-    current=current->next;
-    }
-    current->next=new_node;
+    else{
+        while((p!=NULL) && (k<position)){
+            q=p;
+            k++;
+            p=p->next;
+        }
+        q->next=new_node;
+        new_node->next=p;
     }
 }
-void insert_end(){
-    struct node *new_node,*current;
-    new_node=(struct node *)malloc(sizeof(struct node));
-    printf("\nEnter the data : ");
-    scanf("%d",&new_node->data);
-    new_node->next=NULL;
-    if(Head==NULL)
-    {
-    Head=new_node;
+
+void delete(){
+    int k=1,position;
+    struct node *p,*q;
+    printf("\nEnter the position of the data to be deleted: ");
+    scanf("%d",&position);
+    if(head==NULL){
+        printf("Empty list");
     }
-    else
-    {
-    current=Head;
-    while(current->next!=NULL)
-    {
-    current=current->next;
-    }
-    new_node->next=current->next;
-    current->next=new_node;
-    }
-}
-void delete_first(){
-    struct node *current;
-    if(Head==NULL)
-    {
-    printf("List is empty");
-    }
-    else
-    {
-    current=Head;
-    Head=current->next;
-    free(current);
+    else{
+        p=head;
+        if(position==1){
+            head=head->next;
+            free(p);
+        }
+        else{
+            while((p!=NULL)&&(k<position)){
+                k++;
+                q=p;
+                p=p->next;
+            }
+            if(p==NULL){
+                printf("Position does not exist");
+            }
+            else{
+                q->next=p->next;
+                free(p);
+            }
+        }
     }
 }
-void delete_middle(){
-    struct node *current,*before;
-    if(Head==NULL)
-    {
-    printf("List is empty");
-    }
-    else
-    {
-    current=Head;
-    while(current->next!=10){
-        before=current;
-        current=current->next;
-    }
-    before->next=current->next;
-    free(current);
-    }
-}
-void delete_last(){
-    struct node *current,*before;
-    if(Head==NULL)
-    {
-    printf("List is empty");
-    }
-    else
-    {
-    current=Head;
-    while(current->next!=NULL){
-        before=current;
-        current=current->next;
-    }
-    before->next=NULL;
-    free(current);
-    }
-}
+
 void display(){
     struct node *new_node;
-    printf("\nThe Linked List : \n");
-    new_node=Head;
-    while(new_node!=NULL)
-    {
-    printf("%d--->",new_node->data);
-    new_node=new_node->next;
-    }
+    printf("\nThe linked list is:\n ");
+    new_node=head;
+    while(new_node!=NULL){
+        printf("%d--->",new_node->data);
+        new_node=new_node->next;
+    }    
     printf("NULL");
-    }
-int main() {
-    int input=0;
-    int times=0;
-    printf("Enter number of queries:");
-    scanf("%d",&times);
-    for(int i=0;i<times;i++){
-    printf("Operations on singly linked list:\n");
-    printf("0:Insert a new node at beginning of the list\n");
-    printf("1:Insert a new node after the node which has the element ‘d’\n");
-    printf("2:Insert a new node at end to the list\n");
-    printf("3:Delete the first node of the list\n");
-    printf("4:Delete an existing node which is placed after the node which has the element ‘d’\n");
-    printf("5:Delete the last node of the list\n");
-    printf("6:Display the elements of the list\n");
-    printf("Enter your choice: ");
-    scanf("%d",&input);
-    switch(input){
-        case 0:
-        insert_beginning();
-        break;
-        
-        case 1:
-        insert_middle();
-        break;
-        
-        case 2:
-        insert_end();
-        break;
-        
-        case 3:
-        delete_first();
-        break;
-        
-        case 4:
-        delete_middle();
-        break;
-        
-        case 5:
-        delete_last();
-        break;
-        
-        case 6:
-        display();
-        break;
-        
-        default:
-        printf("Enter a valid choice number: ");
-    }
 }
-    return 0;
+
+void main(){
+    insert();
+    display();
+    insert();
+    display();
+    insert();
+    display();
+    insert();
+    display();
+    insert();
+    display();
+    insert();
+    display();
 }
