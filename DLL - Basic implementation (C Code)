@@ -1,88 +1,98 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct node{
     int data;
-    struct node *prev;
     struct node *next;
+    struct node *prev;
 }*head=NULL;
 
-
-void insert(){
-    int k=1,data_new,position;
-    struct node *p, *new_node;
-    new_node = (struct node *)malloc(sizeof(struct node));
-    printf("\nEnter the data of the new node to be inserted: ");
-    scanf("%d",&data_new);
-    printf("Enter the position of the new node: ");
-    scanf("%d",&position);
-    new_node->data=data_new;
-    if(position==1){
-        new_node->next=head;
-        new_node->prev=NULL;
-        if(head) head->prev=new_node;   //Important line
-        head=new_node;
-    }
-    else{
-        p=head;
-        while((k<position-1)&&(p->next!=NULL)){
-            p=p->next;
-            k++;
-        }
-        new_node->next=p->next;
-        new_node->prev=p;
-        if(p->next) p->next->prev=new_node;
-        p->next=new_node;
-    }
+void insert()
+{
+   struct node *p, *new_node;
+   int position;
+   new_node=(struct node *)malloc(sizeof(struct node));
+   printf("\nEnter the data to be inserted: ");
+   scanf("%d",&new_node->data);
+   printf("Enter the position of the data: ");
+   scanf("%d",&position);
+   p=head;
+   if(position==1||head==NULL)
+   {
+   new_node->next=head;
+   new_node->prev=NULL;
+   if(head)
+   p->prev=new_node;
+   head=new_node;
+   }
+   else
+   {
+       position--;
+       while(position-- && p->next!=NULL)
+       p=p->next;
+       if(position>0)
+       {
+          p->next=new_node;
+          new_node->prev=p;
+          new_node->next=NULL;
+       }
+       else
+       {
+       
+       new_node->prev=p->prev;
+       new_node->next=p;
+       p->prev->next=new_node;
+       p->prev=new_node;
+       }
+       
+   }
+   
+    
 }
-
-
-void delete(){
-    int k=1,position;
-    struct node *p, *q;
+void display()
+{
+    struct node *p;
     p=head;
-    printf("\nEnter the postion of the node to be deleted: ");
-    scanf("%d",&position);
-    if(head==NULL){
-        printf("\nList is empty\n");
-    }
-    else{
-        if(position==1){
-            head=head->next;
-            if(head!=NULL){
-            head->prev=NULL;
-            }
-            free(p);
-        }
-        else{
-            while((k<position)&&(p->next!=NULL)){
-                p=p->next;
-                k++;
-            }       
-            if(k!=position) printf("Desired position does not exist");
-            q=p->prev;
-            q->next=p->next;
-            if(p->next) p->next->prev=q;
-            free(p);
-        }
-
-    }
-}
-
-void display(){
-    struct node *new_node;
-    new_node=head;
-    printf("\nThe doubly linked list is:\n");
-    while(new_node!=NULL){
-        printf("%d--->",new_node->data);
-        new_node=new_node->next;
+    while(p!=NULL){
+        printf("%d-->",p->data);
+        p=p->next;
     }
     printf("NULL");
 }
 
-void main(){
-    insert();
-    display();
+void delete(){
+    struct node *p;
+    int position;
+    printf("\nEnter the data to be deleted: ");
+    scanf("%d",&position);
+    p=head;
+    if(head==NULL) printf("The list is empty");
+    else{
+        if(position==1){
+            head=head->next;
+            head->prev=NULL;
+            free(p);
+        }
+        else{
+            position--;
+            while(position-- && p->next!=NULL){
+                p=p->next;
+            }
+            if(position>0){
+                printf("Position does not exist");
+            }
+            else{
+                p->prev->next=p->next;
+                if(p->next) p->next->prev=p->prev;
+                free(p);
+            }
+        }
+    }
+}
+
+
+int main()
+{
     insert();
     display();
     insert();
@@ -95,4 +105,5 @@ void main(){
     display();
     delete();
     display();
+    return 0;
 }
