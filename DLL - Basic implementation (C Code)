@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node *prev;
+    struct node *next;
+}*head=NULL;
+
+
+void insert(){
+    int k=1,data_new,position;
+    struct node *p, *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    printf("\nEnter the data of the new node to be inserted: ");
+    scanf("%d",&data_new);
+    printf("Enter the position of the new node: ");
+    scanf("%d",&position);
+    new_node->data=data_new;
+    if(position==1){
+        new_node->next=head;
+        new_node->prev=NULL;
+        if(head) head->prev=new_node;   //Important line
+        head=new_node;
+    }
+    else{
+        p=head;
+        while((k<position-1)&&(p->next!=NULL)){
+            p=p->next;
+            k++;
+        }
+        new_node->next=p->next;
+        new_node->prev=p;
+        if(p->next) p->next->prev=new_node;
+        p->next=new_node;
+    }
+}
+
+
+void delete(){
+    int k=1,position;
+    struct node *p, *q;
+    p=head;
+    printf("\nEnter the postion of the node to be deleted: ");
+    scanf("%d",&position);
+    if(head==NULL){
+        printf("\nList is empty\n");
+    }
+    else{
+        if(position==1){
+            head=head->next;
+            if(head!=NULL){
+            head->prev=NULL;
+            }
+            free(p);
+        }
+        else{
+            while((k<position)&&(p->next!=NULL)){
+                p=p->next;
+                k++;
+            }       
+            if(k!=position) printf("Desired position does not exist");
+            q=p->prev;
+            q->next=p->next;
+            if(p->next) p->next->prev=q;
+            free(p);
+        }
+
+    }
+}
+
+void display(){
+    struct node *new_node;
+    new_node=head;
+    printf("\nThe doubly linked list is:\n");
+    while(new_node!=NULL){
+        printf("%d--->",new_node->data);
+        new_node=new_node->next;
+    }
+    printf("NULL");
+}
+
+void main(){
+    insert();
+    display();
+    insert();
+    display();
+    insert();
+    display();
+    insert();
+    display();
+    delete();
+    display();
+    delete();
+    display();
+    delete();
+    display();
+}
