@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Stack{
+    int capacity;
+    int top;
+    int *array;
+};
+
+struct Stack *CreateStack(){
+    struct Stack *S = malloc(sizeof(struct Stack));
+    if(!S) return NULL;
+    S->capacity = 1;
+    S->top = -1;
+    S->array = malloc(S->capacity*sizeof(int));
+    if(!S->array) return NULL;
+    return S;
+}
+
+int IsEmptyStack(struct Stack *S){
+    return (S->top == -1);
+}
+
+int IsFullStack(struct Stack *S){
+    return (S->top == S->capacity - 1);
+}
+
+void DoubleStack(struct Stack *S){
+    S->capacity *= 2;
+    S->array = realloc(S->array, S->capacity*sizeof(int));
+}
+
+void Push(struct Stack *S){
+    int data;
+    printf("Enter the data to be pushed: ");
+    scanf("%d",&data);
+    if(IsFullStack(S)) DoubleStack(S);
+    else
+    S->array[++S->top] = data;
+}
+
+
+void Pop(struct Stack *S){
+    int data;
+    if(IsEmptyStack(S)) printf("Empty Stack");
+    else{
+    data = S->array[S->top]; 
+    S->top = S->top - 1;
+    printf("Data which is popped is: %d\n",data);
+    }
+}
+
+void deleteStack(struct Stack *S){
+    if(S)
+    if(S->array)
+    free(S->array);
+    free(S);
+}
+
+void main(){
+    struct Stack *S = CreateStack();
+    Push(S);
+    Push(S);
+    Push(S);
+    Push(S);
+    Push(S);
+    Push(S);
+    Pop(S);
+    Pop(S);
+    Pop(S);
+    Pop(S);
+    Push(S);
+    Push(S);
+    Push(S);
+    Pop(S);
+    Pop(S);
+    Pop(S);
+    Pop(S);
+}
