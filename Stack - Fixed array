@@ -1,0 +1,63 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAXSIZE 10
+
+struct Stack{
+    int capacity;
+    int top;
+    int *array;
+};
+
+struct Stack *CreateStack(){
+    struct Stack *S = malloc(sizeof(struct Stack));
+    if(!S) return NULL;
+    S->capacity = MAXSIZE;
+    S->top = -1;
+    S->array = malloc(S->capacity*sizeof(int));
+    if(!S->array) return NULL;
+    return S;
+}
+
+int IsEmptyStack(struct Stack *S){
+    return (S->top == -1);
+}
+
+int IsFullStack(struct Stack *S){
+    return (S->top == S->capacity - 1);
+}
+
+void Push(struct Stack *S){
+    int data;
+    printf("Enter the data to be pushed: ");
+    scanf("%d",&data);
+    if(IsFullStack(S)) printf("Stack overflow");
+    else
+    S->array[++S->top] = data;
+}
+
+
+void Pop(struct Stack *S){
+    int data;
+    if(IsEmptyStack(S)) printf("Empty Stack");
+    else
+        data = S->array[S->top--]; 
+    printf("Data which is popped is: %d\n",data);
+}
+
+void deleteStack(struct Stack *S){
+    if(S)
+    if(S->array)
+    free(S->array);
+    free(S);
+}
+
+void main(){
+    struct Stack *S = CreateStack();
+    Push(S);
+    Push(S);
+    Push(S);
+    Pop(S);
+    Pop(S);
+    
+    
+}
