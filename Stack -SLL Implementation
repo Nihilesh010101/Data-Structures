@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Stack{
+    int data;
+    struct node *next;
+}*top = NULL;
+
+void Push(){
+    int data_new;
+    printf("Enter the data to be inserted: ");
+    scanf("%d",&data_new);
+    struct Stack *newNode;
+    newNode = malloc(sizeof(struct Stack));
+    newNode->data=data_new;
+    newNode->next = top;
+    top = newNode;
+}
+
+void Pop(){
+    int data_new;
+    struct Stack *temp;
+    temp=top;
+    if(top != NULL){
+        data_new = top->data;
+        top = top->next;
+        free(temp);
+        printf("The popped data is: %d\n",data_new);
+    }
+    else printf("Stack Empty");
+}
+
+void main(){
+    Push();
+    Push();
+    Push();
+    Pop();
+    Pop();
+    Pop();
+    Pop();
+}
