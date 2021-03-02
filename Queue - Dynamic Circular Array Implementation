@@ -1,0 +1,83 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Queue{
+    int rear,front;
+    int *array;
+    int capacity;
+};
+
+struct Queue *CreateQueue(){
+    struct Queue *Q = malloc(sizeof(struct Queue));
+    if(!Q) return NULL;
+    Q->capacity = 1;
+    Q->front = Q->rear = -1;
+    Q->array = malloc(Q->capacity * sizeof(int));
+    if(!Q->array) return NULL;
+    return Q;
+}
+
+int IsEmptyQueue(struct Queue *Q){
+    if(Q->front == -1) return 1;
+    return 0;
+}
+
+int IsFullQueue(struct Queue *Q){
+    if((Q->rear + 1)%Q->capacity == Q->front) return 1;
+    return 0;
+}
+
+void DoubleSizeQueue(struct Queue *Q){
+    int size = Q->capacity;
+    Q->capacity *=2;
+    Q->array = realloc(Q->array, Q->capacity);
+    if(Q->front > Q->rear){
+        for(int i=0;i<Q->front;i++){
+            Q->array[i+size] = Q->array[i];
+        }
+        Q->rear = Q->rear + size;
+    }
+}
+
+void EnQueue(struct Queue *Q){
+    int data = 0;
+    printf("Enter the data to be inserted: ");
+    scanf("%d",&data);
+    if(IsFullQueue(Q)) DoubleSizeQueue(Q);
+    Q->rear = (Q->rear+1)%Q->capacity;
+    Q->array[Q->rear]=data;
+    if(Q->front == -1) Q->front = Q->rear;
+}
+
+void DeQueue(struct Queue *Q){
+    int data = 0;
+    if(IsEmptyQueue(Q)){
+        printf("Queue is empty");
+        return;
+    }
+    data = Q->array[Q->front];
+    if(Q->front == Q->rear) Q->front = Q->rear = -1;
+    else Q->front = (Q->front + 1)%Q->capacity;
+    printf("The removed data is: %d\n",data);
+}
+
+void Delete(struct Queue *Q){
+    if(Q)
+    if(Q->array)
+    free(Q->array);
+    free(Q);
+    return;
+}
+
+void main(){
+    struct Queue *Q;
+    Q = CreateQueue();
+    EnQueue(Q);
+    EnQueue(Q);
+    EnQueue(Q);
+    EnQueue(Q);
+    DeQueue(Q);
+    DeQueue(Q);
+    DeQueue(Q);
+    DeQueue(Q);
+}
