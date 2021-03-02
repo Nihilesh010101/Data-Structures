@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Queue{
+    int front,rear;
+    int capacity;
+    int *array;
+};
+
+struct Queue *CreateQueue(int size){
+    struct Queue *Q = malloc(sizeof(struct Queue));
+    if(!Q) return NULL;
+    Q->capacity = size;
+    Q->front = Q->rear = -1;
+    Q->array = malloc(size * sizeof(int));
+    if(!Q->array) return NULL;
+    return Q;
+}
+
+int IsEmptyQueue(struct Queue *Q){
+    if(Q->front == -1) return 1;
+    return 0;
+}
+
+int IsFullQueue(struct Queue *Q){
+    if((Q->rear+1)%Q->capacity == Q->front) return 1;
+    return 0;
+}
+
+int QueueSize(struct Queue *Q){
+    return (Q->capacity - Q->front + Q->rear)%Q->capacity;
+}
+
+void EnQueue(struct Queue *Q){
+    int data;
+    printf("Enter the data: ");
+    scanf("%d",&data);
+    if(IsFullQueue(Q)) return;
+    Q->rear = (Q->rear + 1)%Q->capacity;
+    Q->array[Q->rear] = data;
+    if(Q->front == -1) Q->front = Q->rear;
+}
+
+void DeQueue(struct Queue *Q){
+    int data = 0;
+    if(IsEmptyQueue(Q)){
+    printf("Empty Queue");
+    return;
+    }
+    data = Q->array[Q->front];
+    if(Q->front == Q->rear) Q->front = Q->rear = -1;
+    else Q->front = (Q->front+1)%Q->capacity;
+    printf("The data removed is: %d\n",data);
+}
+
+void Delete(struct Queue *Q){
+    if(Q)
+    if(Q->array)
+    free(Q->array);
+    free(Q);
+}
+
+
+void main(){
+    int size;
+    printf("Enter the size of the queue: ");
+    scanf("%d",&size);
+    struct Queue *Q;
+    Q = CreateQueue(size);
+    EnQueue(Q);
+    EnQueue(Q);
+    EnQueue(Q);
+    EnQueue(Q);
+    DeQueue(Q);
+    DeQueue(Q);
+    DeQueue(Q);
+    DeQueue(Q);
+}
