@@ -1,0 +1,37 @@
+#include<stdio.h>
+
+int matrix[1024][1024];
+void printmatrix(int m, int n){
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n\n");
+}
+
+int LCS(char *a, int m, char *b, int n){
+    int temp1 = m, temp2 = n;
+    for(int i = 0; i <= m; i++) matrix[i][n] = 0;
+    for(int j = 0; j <= n; j++) matrix[m][j] = 0;
+    for(int i = m - 1; i >= 0; i--){
+        for(int j = n - 1; j >=0; j--){
+            matrix[i][j] = matrix[i + 1][j + 1];
+            if(a[i] == b[j]) matrix[i][j]++;
+            if(matrix[i][j + 1] > matrix[i][j]) matrix[i][j] = matrix[i][j + 1];
+            if(matrix[i + 1][j] > matrix[i][j]) matrix[i][j] = matrix[i + 1][j];
+            printmatrix(temp1 + 1 ,temp2 + 1);
+        }
+    }
+    return matrix[0][0];
+}
+
+void main(){
+    char a[10] = "ABCBDAB";
+    char b[10] = "BDCABA";
+    int m = 7;
+    int n = 6;
+    int length_of_common_subsequence = LCS(a, m, b, n);
+    printf("\n\n%d", length_of_common_subsequence);
+}
